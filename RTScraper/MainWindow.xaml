@@ -7,13 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="375" Width="595">
     <Grid>
-        <ListBox Margin="10,10,285,10"
-         ItemsSource="{Binding RTsites}">
+        <ListBox Margin="10,10,410,10" Name="RTSitesList">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Path=Name}" />
-                        <TextBlock Text="{Binding Path=Description}"/>
+                        <Image Source="{Binding Path=Image}" Height="64" Width="64"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
