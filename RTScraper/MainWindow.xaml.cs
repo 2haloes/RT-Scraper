@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,30 @@ namespace RTScraper
 
 
             RTSitesList.ItemsSource = RTList;
+
+            string webpage;
+            List<string[]> ShowArrays = new List<string[]>();
+            string[] ShowBlocks;
+            using (var wc = new System.Net.WebClient())
+            {
+                webpage = wc.DownloadString("http://cowchop.roosterteeth.com/show");
+            }
+            int checkchar = 0;
+            checkchar = webpage.IndexOf("<h2>New");
+            checkchar = checkchar + 61;
+            webpage = webpage.Remove(0, checkchar);
+            webpage = webpage.Remove(webpage.IndexOf("<!-- =============== BEGIN FOOTER =============== -->") - 3);
+            ShowBlocks = webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
+            foreach (var item in ShowBlocks)
+            {
+                if (item == ShowBlocks[ShowBlocks.Count() - 1])
+                {
+                    return;
+                }
+                MessageBox.Show(item);
+                ShowArrays.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+            }
+            
         }
     }
 
