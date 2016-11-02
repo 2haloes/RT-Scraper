@@ -72,11 +72,15 @@ namespace RTScraper
                     }
                     else if (stringitem.IndexOf("<p class=\"name\"") != -1)
                     {
-                        MessageBox.Show(stringitem);
+                        Name = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
+                        Name = Name.Remove(Name.IndexOf('<'));
+                        MessageBox.Show(Name);
                     }
                     else if (stringitem.IndexOf("<p class=\"post-stamp\"") != -1)
                     {
-                        MessageBox.Show(stringitem);
+                        Info = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
+                        Info = Info.Remove(Info.IndexOf('<'));
+                        MessageBox.Show(Info);
                     }
                 }
             }
