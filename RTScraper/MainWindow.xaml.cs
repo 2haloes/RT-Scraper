@@ -23,6 +23,7 @@ namespace RTScraper
     {
         List<RTSites> RTList;
         List<Shows> ShowsData;
+        List<Episodes> AllEpisodes;
         public MainWindow()
         {
             RTList = new List<RTSites>();
@@ -38,9 +39,6 @@ namespace RTScraper
 
 
             RTSitesList.ItemsSource = RTList;
-
-            /**/
-            
         }
 
         private void RTSitesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -57,7 +55,15 @@ namespace RTScraper
             {
                 ShowLabel.Content = ShowsData[ShowsList.SelectedIndex].Name;
                 ShowImage.Source = new BitmapImage(new Uri(ShowsData[ShowsList.SelectedIndex].Image));
+                List<Episodes> AllEpisodes = new List<Episodes>();
+                AllEpisodes = Episodes.ExtractEpisodes(ShowsData[ShowsList.SelectedIndex].ShowURL);
+                EpisodeList.ItemsSource = AllEpisodes;
             }
+        }
+
+        private void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 

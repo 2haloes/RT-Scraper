@@ -40,6 +40,21 @@
                     <Image x:Name="ShowImage" HorizontalAlignment="Left" Height="128" Width="128" Margin="291,78,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Episodes">
+                <Grid>
+                    <ListBox Margin="10,10,410,10" Name="EpisodeList" SelectionChanged="EpisodeList_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Label x:Name="EpisodeLabel" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="198,10,0,0" VerticalAlignment="Top" Height="45" Width="318" FontSize="24"/>
+                    <Image x:Name="EpisodeImage" HorizontalAlignment="Left" Height="128" Width="128" Margin="291,78,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
