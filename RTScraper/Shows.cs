@@ -22,7 +22,7 @@ namespace RTScraper
             this.Info = Info;
         }
 
-        public static void ShowScraper(string SiteURL)
+        public static List<Shows> ShowScraper(string SiteURL)
         {
             string webpage;
             List<string[]> ShowArrays = new List<string[]>();
@@ -49,12 +49,13 @@ namespace RTScraper
                     ShowArrays.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                 }
             }
+
             foreach (string[] item in ShowArrays)
             {
-                string ShowURL;
-                string Name;
-                string Image;
-                string Info;
+                string ShowURL = null;
+                string Name = null;
+                string Image = null;
+                string Info = null;
 
                 foreach (string stringitem in item)
                 {
@@ -62,28 +63,29 @@ namespace RTScraper
                     {
                         ShowURL = stringitem.Remove(0, stringitem.IndexOf('"') + 1);
                         ShowURL = ShowURL.Remove(ShowURL.IndexOf('"'));
-                        MessageBox.Show(ShowURL);
                     }
                     else if (stringitem.IndexOf("<img") != -1)
                     {
-                        Image = stringitem.Remove(0, stringitem.IndexOf('"') + 1);
+                        Image = stringitem.Remove(0, stringitem.IndexOf('"') + 3);
                         Image = Image.Remove(Image.IndexOf('"'));
-                        MessageBox.Show(Image);
+                        Image = "https://" + Image;
                     }
                     else if (stringitem.IndexOf("<p class=\"name\"") != -1)
                     {
                         Name = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
                         Name = Name.Remove(Name.IndexOf('<'));
-                        MessageBox.Show(Name);
                     }
                     else if (stringitem.IndexOf("<p class=\"post-stamp\"") != -1)
                     {
                         Info = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
                         Info = Info.Remove(Info.IndexOf('<'));
-                        MessageBox.Show(Info);
                     }
+                    
                 }
+
+                AllShows.Add(new Shows(ShowURL, Name, Image, Info));
             }
+            return AllShows;
         }
     }
 }

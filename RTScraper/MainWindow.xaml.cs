@@ -22,6 +22,7 @@ namespace RTScraper
     public partial class MainWindow : Window
     {
         List<RTSites> RTList;
+        List<Shows> ShowsData;
         public MainWindow()
         {
             RTList = new List<RTSites>();
@@ -46,7 +47,17 @@ namespace RTScraper
         {
             SiteLabel.Content = RTList[RTSitesList.SelectedIndex].Name;
             SiteImage.Source = new BitmapImage(new Uri(RTList[RTSitesList.SelectedIndex].Image));
-            Shows.ShowScraper(RTList[RTSitesList.SelectedIndex].SiteURL);
+            ShowsData = Shows.ShowScraper(RTList[RTSitesList.SelectedIndex].SiteURL);
+            ShowsList.ItemsSource = ShowsData;
+        }
+
+        private void ShowsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ShowsList.SelectedIndex != -1)
+            {
+                ShowLabel.Content = ShowsData[ShowsList.SelectedIndex].Name;
+                ShowImage.Source = new BitmapImage(new Uri(ShowsData[ShowsList.SelectedIndex].Image));
+            }
         }
     }
 

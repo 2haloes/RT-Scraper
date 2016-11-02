@@ -26,8 +26,7 @@
             </TabItem>
             <TabItem Header="Shows">
                 <Grid>
-                    <ListBox Margin="10,10,410,10" Name="ShowsList">
-                        <!--SelectionChanged="ShowsList_SelectionChanged"-->
+                    <ListBox Margin="10,10,410,10" Name="ShowsList" SelectionChanged="ShowsList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
