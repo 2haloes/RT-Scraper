@@ -7,16 +7,40 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="375" Width="595">
     <Grid>
-        
-        <ListBox Margin="10,10,410,10" Name="RTSitesList">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Path=Name}" />
-                        <Image Source="{Binding Path=Image}" Height="64" Width="64"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <TabControl Margin="0,0,0,30">
+            <TabItem Header="Site">
+                <Grid>
+                    <ListBox Margin="10,10,410,10" Name="RTSitesList" SelectionChanged="RTSitesList_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=Name}" TextAlignment="Center" />
+                                    <Image Source="{Binding Path=Image}" Height="64" Width="64" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Label x:Name="SiteLabel" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="198,10,0,0" VerticalAlignment="Top" Height="45" Width="318" FontSize="24"/>
+                    <Image x:Name="SiteImage" HorizontalAlignment="Left" Height="128" Width="128" Margin="291,78,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Shows">
+                <Grid>
+                    <ListBox Margin="10,10,410,10" Name="ShowsList">
+                        <!--SelectionChanged="ShowsList_SelectionChanged"-->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Path=Name}" TextAlignment="Center" />
+                                    <Image Source="{Binding Path=Image}" Height="64" Width="64" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Label x:Name="ShowLabel" Content="" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="198,10,0,0" VerticalAlignment="Top" Height="45" Width="318" FontSize="24"/>
+                    <Image x:Name="ShowImage" HorizontalAlignment="Left" Height="128" Width="128" Margin="291,78,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
