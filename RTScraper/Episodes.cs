@@ -15,6 +15,7 @@ namespace RTScraper
         public string UploadTime { get; set; }
         public string SponserImage { get; set; }
         public string PageURL { get; set; }
+        public string Season { get; set; }
 
         public Episodes(string Title, string Image, string Runtime, string UploadTime, string SponserImage, string PageURL)
         {
@@ -55,14 +56,11 @@ namespace RTScraper
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
 
+            // Split into seasons somehow then into episode blocks... or something like that
             EpisodeBlocks = Webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
             foreach (string item in EpisodeBlocks)
             {
-                if (item == EpisodeBlocks[EpisodeBlocks.Count() - 1])
-                {
-
-                }
-                else
+                if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
                 {
                     EpisodesArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                 }
