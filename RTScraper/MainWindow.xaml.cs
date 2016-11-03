@@ -66,6 +66,7 @@ namespace RTScraper
             if (ShowsList.SelectedIndex != -1)
             {
                 string pie = EpisodeList.SelectedItem.ToString();
+                
             }
         }
     }

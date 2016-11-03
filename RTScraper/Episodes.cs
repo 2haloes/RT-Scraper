@@ -15,9 +15,9 @@ namespace RTScraper
         public string UploadTime { get; set; }
         public string SponserImage { get; set; }
         public string PageURL { get; set; }
-        public string Season { get; set; }
+        public int Season { get; set; }
 
-        public Episodes(string Title, string Image, string Runtime, string UploadTime, string SponserImage, string PageURL)
+        public Episodes(string Title, string Image, string Runtime, string UploadTime, string SponserImage, string PageURL, int Season)
         {
             this.Title = Title;
             this.Image = Image;
@@ -25,6 +25,7 @@ namespace RTScraper
             this.UploadTime = UploadTime;
             this.SponserImage = SponserImage;
             this.PageURL = PageURL;
+            this.Season = Season;
         }
 
         public static List<Episodes> ExtractEpisodes(string PageURL)
@@ -51,69 +52,79 @@ namespace RTScraper
         {
             List<Episodes> AllEpisodes = new List<Episodes>();
             List<string[]> EpisodesArray = new List<string[]>();
+            List<string[]> SeasonsArray = new List<string[]>();
+            string[] SeasonsBlock;
             string[] EpisodeBlocks;
             int checkchar = 0;
+            int season = 1;
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
 
             // Split into seasons somehow then into episode blocks... or something like that
-            EpisodeBlocks = Webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
-            foreach (string item in EpisodeBlocks)
+            SeasonsBlock = Webpage.Split(new string[] { "</article>" }, StringSplitOptions.None);
+            SeasonsBlock[SeasonsBlock.Count() - 1] = null;
+            season = SeasonsBlock.Count();
+            foreach (var SeasonString in SeasonsBlock)
             {
-                if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
+                EpisodeBlocks = Webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
+                foreach (string item in EpisodeBlocks)
                 {
-                    EpisodesArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
-                }
-            }
-
-            foreach (string[] item in EpisodesArray)
-            {
-                string PageURL = null;
-                string Name = null;
-                string Image = null;
-                string Info = null;
-                string SponserImage = null;
-                string Runtime = null;
-
-                foreach (string stringitem in item)
-                {
-                    if (stringitem.IndexOf("<a ") != -1)
+                    if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
                     {
-                        PageURL = stringitem.Remove(0, stringitem.IndexOf('"') + 1);
-                        PageURL = PageURL.Remove(PageURL.IndexOf('"'));
-                    }
-                    else if (stringitem.IndexOf("<img") != -1)
-                    {
-                        Image = stringitem.Remove(0, stringitem.IndexOf('"') + 3);
-                        Image = Image.Remove(Image.IndexOf('"'));
-                        Image = "https://" + Image;
-                    }
-                    else if (stringitem.IndexOf("<p class=\"name\"") != -1)
-                    {
-                        Name = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
-                        Name = Name.Remove(Name.IndexOf('<'));
-                    }
-                    else if (stringitem.IndexOf("<p class=\"post-stamp\"") != -1)
-                    {
-                        Info = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
-                        Info = Info.Remove(Info.IndexOf('<'));
-                    }
-                    else if (stringitem.IndexOf("icon ion-star") != -1)
-                    {
-                        SponserImage = "★";
-                    }
-                    else if (stringitem.IndexOf("ion-play") != -1)
-                    {
-                        Runtime = stringitem.Remove(0, stringitem.IndexOf("ion-play") + 15);
-                        Runtime = Runtime.Remove(Runtime.IndexOf('<'));
+                        EpisodesArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                     }
                 }
 
-                if (Name == null)
+                foreach (string[] item in EpisodesArray)
                 {
-                    break;
+                    string PageURL = null;
+                    string Name = null;
+                    string Image = null;
+                    string Info = null;
+                    string SponserImage = null;
+                    string Runtime = null;
+
+                    foreach (string stringitem in item)
+                    {
+                        if (stringitem.IndexOf("<a ") != -1)
+                        {
+                            PageURL = stringitem.Remove(0, stringitem.IndexOf('"') + 1);
+                            PageURL = PageURL.Remove(PageURL.IndexOf('"'));
+                        }
+                        else if (stringitem.IndexOf("<img") != -1)
+                        {
+                            Image = stringitem.Remove(0, stringitem.IndexOf('"') + 3);
+                            Image = Image.Remove(Image.IndexOf('"'));
+                            Image = "https://" + Image;
+                        }
+                        else if (stringitem.IndexOf("<p class=\"name\"") != -1)
+                        {
+                            Name = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
+                            Name = Name.Remove(Name.IndexOf('<'));
+                        }
+                        else if (stringitem.IndexOf("<p class=\"post-stamp\"") != -1)
+                        {
+                            Info = stringitem.Remove(0, stringitem.IndexOf('>') + 1);
+                            Info = Info.Remove(Info.IndexOf('<'));
+                        }
+                        else if (stringitem.IndexOf("icon ion-star") != -1)
+                        {
+                            SponserImage = "★";
+                        }
+                        else if (stringitem.IndexOf("ion-play") != -1)
+                        {
+                            Runtime = stringitem.Remove(0, stringitem.IndexOf("ion-play") + 15);
+                            Runtime = Runtime.Remove(Runtime.IndexOf('<'));
+                        }
+                    }
+
+                    if (Name == null)
+                    {
+                        break;
+                    }
+                    AllEpisodes.Add(new Episodes(Name, Image, Runtime, Info, SponserImage, PageURL, season));
                 }
-                AllEpisodes.Add(new Episodes(Name, Image, Runtime, Info, SponserImage, PageURL));
+                season--;
             }
             return AllEpisodes;
         }

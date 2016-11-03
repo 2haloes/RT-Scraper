@@ -46,7 +46,11 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" />
+                                    <Expander Header="{Binding Path=Season}" HorizontalAlignment="Left" VerticalAlignment="Center" Name="SeasonExpander" >
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" />
+                                        </StackPanel>
+                                    </Expander>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
