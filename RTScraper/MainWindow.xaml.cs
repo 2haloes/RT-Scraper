@@ -63,7 +63,7 @@ namespace RTScraper
 
         private void EpisodeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            string pie = EpisodeList.SelectedItem.ToString();
         }
     }
 

@@ -42,7 +42,7 @@
             </TabItem>
             <TabItem Header="Episodes">
                 <Grid>
-                    <ListBox Margin="10,10,410,10" Name="EpisodeList" SelectionChanged="EpisodeList_SelectionChanged">
+                    <ListBox Margin="10,10,338,10" Name="EpisodeList" SelectionChanged="EpisodeList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
