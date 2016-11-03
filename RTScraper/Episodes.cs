@@ -35,7 +35,7 @@ namespace RTScraper
                 Webpage = wc.DownloadString(PageURL);
             }
             // Reverse seasons from count (1 = 12 etc.)
-            if (Webpage.IndexOf("pull-right") != -1)
+            if (Webpage.IndexOf("pull") == -1)
             {
                 AllEpisodes = FromShowPage(Webpage);
             }
@@ -125,12 +125,15 @@ namespace RTScraper
             List<Episodes> AllEpisodes = new List<Episodes>();
             List<string> AllLinks = new List<string>();
             List<int> LinkIndexs = new List<int>();
-            int index = Webpage.IndexOf("pull-right");
+            int index = Webpage.IndexOf("pull");
+            string tempString = Webpage.Substring(index + 18);
             while (index != -1)
             {
-                LinkIndexs.Add(index);
-                index = Webpage.IndexOf("pull-right", index + "pull-right".Length);
+                AllLinks.Add(tempString.Remove(tempString.IndexOf(">") - 1));
+                index = Webpage.IndexOf("pull", index + "pull".Length);
+                tempString = Webpage.Substring(index + 18);
             }
+            
             return AllEpisodes;
         }
     }
