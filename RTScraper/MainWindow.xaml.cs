@@ -55,9 +55,27 @@ namespace RTScraper
             {
                 ShowLabel.Content = ShowsData[ShowsList.SelectedIndex].Name;
                 ShowImage.Source = new BitmapImage(new Uri(ShowsData[ShowsList.SelectedIndex].Image));
-                List<Episodes> AllEpisodes = new List<Episodes>();
+                AllEpisodes = new List<Episodes>();
                 AllEpisodes = Episodes.ExtractEpisodes(ShowsData[ShowsList.SelectedIndex].ShowURL);
-                EpisodeList.ItemsSource = AllEpisodes;
+                int i = 0;
+                List<List<Episodes>> FullEpisodes = new List<List<Episodes>>();
+                FullEpisodes.Add(new List<Episodes>());
+                FullEpisodes[0].Add(AllEpisodes[0]);
+                foreach (var item in AllEpisodes.Skip(1))
+                {
+                    if (item.Season == FullEpisodes[i][0].Season)
+                    {
+                        FullEpisodes[i].Add(item);
+                    }
+                    else
+                    {
+                        FullEpisodes.Add(new List<Episodes>());
+                        i++;
+                        FullEpisodes[i].Add(item);
+                    }
+                }
+                EpisodeList.ItemsSource = FullEpisodes;
+                
             }
         }
 
@@ -65,7 +83,6 @@ namespace RTScraper
         {
             if (ShowsList.SelectedIndex != -1)
             {
-                string pie = EpisodeList.SelectedItem.ToString();
                 
             }
         }

@@ -52,6 +52,7 @@ namespace RTScraper
         {
             List<Episodes> AllEpisodes = new List<Episodes>();
             List<string[]> EpisodesArray = new List<string[]>();
+            string[] RealEpisodesArray = null;
             List<string[]> SeasonsArray = new List<string[]>();
             string[] SeasonsBlock;
             string[] EpisodeBlocks;
@@ -60,23 +61,31 @@ namespace RTScraper
             checkchar = Webpage.IndexOf("tab-content-episodes");
             Webpage = Webpage.Remove(0, checkchar);
 
-            // Split into seasons somehow then into episode blocks... or something like that
             SeasonsBlock = Webpage.Split(new string[] { "</article>" }, StringSplitOptions.None);
-            SeasonsBlock[SeasonsBlock.Count() - 1] = null;
-            season = SeasonsBlock.Count();
+            if (SeasonsBlock.Count() < 2)
+            {
+                season = 1;
+            }
+            else
+            {
+                season = SeasonsBlock.Count() - 1;
+            }
             foreach (var SeasonString in SeasonsBlock)
             {
-                EpisodeBlocks = Webpage.Split(new string[] { "</li>" }, StringSplitOptions.None);
+                if (SeasonString == null)
+                {
+                    break;
+                }
+                EpisodeBlocks = SeasonString.Split(new string[] { "</li>" }, StringSplitOptions.None);
                 foreach (string item in EpisodeBlocks)
                 {
                     if (!(item == EpisodeBlocks[EpisodeBlocks.Count() - 1]))
                     {
-                        EpisodesArray.Add(item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
+                        RealEpisodesArray = (item.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None));
                     }
-                }
 
-                foreach (string[] item in EpisodesArray)
-                {
+
+
                     string PageURL = null;
                     string Name = null;
                     string Image = null;
@@ -84,7 +93,7 @@ namespace RTScraper
                     string SponserImage = null;
                     string Runtime = null;
 
-                    foreach (string stringitem in item)
+                    foreach (string stringitem in RealEpisodesArray)
                     {
                         if (stringitem.IndexOf("<a ") != -1)
                         {

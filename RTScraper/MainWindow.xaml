@@ -45,13 +45,19 @@
                     <ListBox Margin="10,10,338,10" Name="EpisodeList" SelectionChanged="EpisodeList_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Expander Header="{Binding Path=Season}" HorizontalAlignment="Left" VerticalAlignment="Center" Name="SeasonExpander" >
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" />
-                                        </StackPanel>
-                                    </Expander>
-                                </StackPanel>
+                                <Expander Header="{Binding Season}" HorizontalAlignment="Left" VerticalAlignment="Center" Name="SeasonExpander" >
+                                    <ScrollViewer Height="210" Background="Transparent">
+                                        <ListView ItemsSource="{Binding}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel >
+                                                        <TextBlock Text="{Binding Title}"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </ScrollViewer>
+                                </Expander>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
